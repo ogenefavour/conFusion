@@ -12,7 +12,7 @@ export class DishService {
   constructor() { }
 
   getDishes(): Observable<Dish[]> {
-    return of(DISHES).pipe(delay(2000));
+    return of(DISHES.map(dish => dish));
       //simulate server latency with 2 seconds delay
   }
   
