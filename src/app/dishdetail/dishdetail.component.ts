@@ -24,7 +24,7 @@ export class DishdetailComponent implements OnInit {
   
   commentForm: FormGroup;
   commentformVal: Comment;
-  @ViewChild('cform', {static: false}) feedbackFormDirective;
+  @ViewChild('cform', {static: true}) feedbackFormDirective;
 
   formErrors = {
     'author' : '',
@@ -70,6 +70,10 @@ export class DishdetailComponent implements OnInit {
   onSubmit(){
     this.commentformVal = this.commentForm.value;
     console.log(this.commentformVal);
+    var d = new Date();
+    var date = d.toISOString();
+    this.commentformVal.date = date;
+    this.dish.comments.push(this.commentformVal);
     this.commentForm.reset({
       author: '',
       rating: '5',
@@ -84,8 +88,8 @@ export class DishdetailComponent implements OnInit {
     this.route.params
       .pipe(switchMap((params: Params) => this.dishService.getDish(params["id"])))
       .subscribe(dish => {this.dish = dish; this.setPrevNext(dish.id); });
-    this.dishService.getDishes()
-    .subscribe((dishes) => this.dishes = (dishes))
+    // this.dishService.getDishes()
+    // .subscribe((dishes) => this.dishes = (dishes))
   }
 
   createForm(){
