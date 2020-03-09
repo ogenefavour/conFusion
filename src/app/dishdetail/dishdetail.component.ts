@@ -16,6 +16,7 @@ export class DishdetailComponent implements OnInit {
 
   //@Input()  
   //dish = Dish;
+  errMess: string;
   dish: Dish;
   dishIds: string[];
   dishes: Dish[];
@@ -87,7 +88,8 @@ export class DishdetailComponent implements OnInit {
       .subscribe((dishIds) => this.dishIds = dishIds);
     this.route.params
       .pipe(switchMap((params: Params) => this.dishService.getDish(params["id"])))
-      .subscribe(dish => {this.dish = dish; this.setPrevNext(dish.id); });
+      .subscribe(dish => {this.dish = dish; this.setPrevNext(dish.id); },
+      errMess => this.errMess = <any>errMess);
     // this.dishService.getDishes()
     // .subscribe((dishes) => this.dishes = (dishes))
   }

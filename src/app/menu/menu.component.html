@@ -18,12 +18,13 @@
             </mat-grid-tile>
         </mat-grid-list>
     </div>
-    <div fxFlex [hidden]="dishes">
+    <div fxFlex [hidden]="dishes || errMess">
         <mat-spinner><h4>Loading . . . Please wait</h4></mat-spinner>
     </div>
 
-    <div fxFlex *ngIf="selectedDish">
-        <!-- <app-dishdetail [dish]="selectedDish"></app-dishdetail> -->
+    <div fxFlex *ngIf="errMess">
+        <h2>Error</h2>
+        <h2>{{errMess}}</h2>
     </div>
     
 </div>
