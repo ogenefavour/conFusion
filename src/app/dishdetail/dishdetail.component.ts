@@ -18,6 +18,7 @@ export class DishdetailComponent implements OnInit {
   //dish = Dish;
   errMess: string;
   dish: Dish;
+  dishCopy: Dish;
   dishIds: string[];
   dishes: Dish[];
   prev: string;
@@ -25,6 +26,7 @@ export class DishdetailComponent implements OnInit {
   
   commentForm: FormGroup;
   commentformVal: Comment;
+
   @ViewChild('cform', {static: true}) feedbackFormDirective;
 
   formErrors = {
@@ -74,7 +76,12 @@ export class DishdetailComponent implements OnInit {
     var d = new Date();
     var date = d.toISOString();
     this.commentformVal.date = date;
-    this.dish.comments.push(this.commentformVal);
+    this.dishCopy.comments.push(this.commentformVal);
+    this.dishService.putDish(this.dishCopy)
+      .subscribe(dish =>{
+        this.dish = dish; this.dishCopy = dish;
+      }, 
+      errmess => {this.dish = null; this.dishCopy = null; this.errMess = <any>errmess;});
     this.commentForm.reset({
       author: '',
       rating: '5',
@@ -88,7 +95,7 @@ export class DishdetailComponent implements OnInit {
       .subscribe((dishIds) => this.dishIds = dishIds);
     this.route.params
       .pipe(switchMap((params: Params) => this.dishService.getDish(params["id"])))
-      .subscribe(dish => {this.dish = dish; this.setPrevNext(dish.id); },
+      .subscribe(dish => {this.dish = dish; this.dishCopy = dish; this.setPrevNext(dish.id); },
       errMess => this.errMess = <any>errMess);
     // this.dishService.getDishes()
     // .subscribe((dishes) => this.dishes = (dishes))
